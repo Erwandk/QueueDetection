@@ -1,0 +1,4 @@
+blur : 2.97, R2 0.92
+contrast : 2.94, R2 0.91
+brightness : 2.8, R2 0.95
+noise : 3.5, R2 0.94

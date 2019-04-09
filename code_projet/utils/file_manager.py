@@ -49,9 +49,38 @@ def labellise_photos(path_img, path_label, erase=False):
         print("Label saved !")
 
 
+def get_info_labellisation(path_label):
+    """
+    Fonction permettant de connaitre des informations sur les photos ayant été labellisées
+    """
+    if not os.path.isdir(path_label):
+        raise NameError("Input should be a directory : \npath_label : {}".format(path_label))
+
+    info_lab = {}
+    for label_file in os.listdir(path_label):
+        if not os.path.isfile(os.path.join(path_label, label_file)):
+            continue
+        with open(os.path.join(path_label, label_file), "r") as file:
+            label = int(file.read())
+            info_lab[label] = info_lab[label] + 1 if label in info_lab else 1
+
+    nb_labels = sum([info_lab[label] for label in info_lab])
+    x = list(range(max(info_lab.keys()) + 1))
+    y = [info_lab[label] if label in info_lab else 0 for label in x]
+
+    print("Nombre de labels : {}".format(nb_labels))
+    plt.figure(figsize=(15, 6))
+    plt.bar(x, y)
+    plt.title("Répartition des labels")
+    plt.xlabel("Nombre de personnes")
+    plt.ylabel("Quantité de photos labellisées")
+    plt.show()
+
+
 if __name__ == '__main__':
 
-    path_img = "/home/erwan/Centrale/OSY/DEEPL/Projet/QueueDetection/data/img/test"
-    path_label = "/home/erwan/Centrale/OSY/DEEPL/Projet/QueueDetection/data/labels/regression/test"
+    path_img = "/home/erwan/Centrale/OSY/DEEPL/Projet/QueueDetection/data/img/"
+    path_label = "/home/erwan/Centrale/OSY/DEEPL/Projet/QueueDetection/data/labels/regression/"
 
-    labellise_photos(path_img, path_label)
+    # labellise_photos(path_img, path_label)
+    get_info_labellisation(path_label)
